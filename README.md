@@ -11,3 +11,7 @@ There are a few features that this program is aiming to have
 - Gravitational interactions (WIP)
 - Collisions and interactions (Maybe, but strongly considerated)
 - Quantum mechanincs (Maybe)
+
+# DEPENDENCIES
+## UBUNTU/DEBIAN
+- GTK 4: libgtk-4-dev
