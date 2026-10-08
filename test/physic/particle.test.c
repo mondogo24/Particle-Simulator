@@ -55,8 +55,10 @@ static void test_particle_gravitation_on_normal_conditions_should_calculate_valu
 
         ASSERT(vector2_equals(samples[i].position, expecteds[i].position),
           "Positions weren't correctly setted.");
+        printf("a: %f, %f. b: %f, %f.\n", samples[i].position.x, samples[i].position.y, expecteds[i].position.x, expecteds[i].position.y);
         ASSERT(vector2_equals(samples[i].velocity, expecteds[i].velocity),
           "Velocities weren't correctly setted.");
+        printf("a: %f, %f. b: %f, %f.\n", samples[i].velocity.x, samples[i].velocity.y, expecteds[i].velocity.x, expecteds[i].velocity.y);
         ASSERT(particle_equals(&samples[i], &expecteds[i]),
           "Something else changed when it shoundn't");
     }
