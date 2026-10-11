@@ -32,7 +32,7 @@ static double rand_from(double min_inclusive, double max_exclusive) {
     return min_inclusive + (rand() / div);
 }
 
-void simulation_start(struct particle* restrict particles, size_t length, float fixed_time, char* stop) {
+void simulation_start(struct particle* particles, size_t length, float fixed_time, char* stop) {
     while (!*stop) {
         particle_gravitation(particles, length, fixed_time);
     }

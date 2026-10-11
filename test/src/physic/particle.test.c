@@ -42,6 +42,7 @@ int main() {
     );
 
     FINALIZE_TESTING;
+    return 1;
 }
 
 static void test_particle_gravitation_on_normal_conditions_should_calculate_values_correctly(
