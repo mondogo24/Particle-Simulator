@@ -15,7 +15,4 @@ struct particle {
 struct particle particle_init(struct vector2 position, struct vector2 velocity, double mass);
 
 char particle_equals(struct particle* a, struct particle* b);
-
-void particle_gravitation(struct particle* restrict particles, size_t length, float fixed_time);
-
 #endif

@@ -1,51 +1,41 @@
 #include <gtk/gtk.h>
 
-static void
-print_hello (GtkWidget *widget,
-             gpointer   data)
-{
-  g_print ("Hello World\n");
+#include "ui/identifier.h"
+#include "ui/signal.h"
+
+#define APPLICATION_ID nullptr
+
+static void activate(GtkApplication* app, gpointer user_data);
+
+static GtkBuilder* ui_builder;
+
+int main (int argc, char** argv) {
+    GtkApplication* app = gtk_application_new(APPLICATION_ID, G_APPLICATION_DEFAULT_FLAGS);
+    g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);
+    int status = g_application_run(G_APPLICATION (app), argc, argv);
+
+    g_object_unref(app);
+    g_object_unref(ui_builder);
+
+    return status;
 }
 
-static void
-activate (GtkApplication *app,
-          gpointer        user_data)
-{
-  GtkWidget *window;
-  GtkWidget *button;
-  GtkWidget *box;
+static void activate(GtkApplication* app, gpointer user_data) {
+    ui_builder = gtk_builder_new_from_file(UI_MAIN_WINDOW_STACK);
+    
+    GtkBuilderScope* scope = gtk_builder_get_scope(ui_builder);
+    gtk_builder_cscope_add_callback(scope, main_menu_start_random_simulation_clicked);
 
-  window = gtk_application_window_new (app);
-  gtk_window_set_title (GTK_WINDOW (window), "Window");
-  gtk_window_set_default_size (GTK_WINDOW (window), 200, 200);
+    GtkWindow* window = GTK_WINDOW(gtk_builder_get_object(ui_builder, ID_WINDOW));
+    gtk_window_set_application(window, app);
 
-  box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
-  gtk_widget_set_halign (box, GTK_ALIGN_CENTER);
-  gtk_widget_set_valign (box, GTK_ALIGN_CENTER);
+    GtkStack* view_stack = GTK_STACK(gtk_builder_get_object(ui_builder, ID_STACK_VIEW_CONTAINER));
+    GtkWidget* main_menu = GTK_WIDGET(gtk_builder_get_object(ui_builder, ID_MAIN_MENU_VIEW));
 
-  gtk_window_set_child (GTK_WINDOW (window), box);
+    GtkButton* quit_button = GTK_BUTTON(gtk_builder_get_object(ui_builder, ID_MAIN_MENU_BUTTON_QUIT));
+    g_signal_connect_swapped(quit_button, "clicked", G_CALLBACK(gtk_window_destroy), window);
+    
+    gtk_stack_set_visible_child(view_stack, main_menu);
 
-  button = gtk_button_new_with_label ("Hello World");
-
-  g_signal_connect (button, "clicked", G_CALLBACK (print_hello), NULL);
-  g_signal_connect_swapped (button, "clicked", G_CALLBACK (gtk_window_destroy), window);
-
-  gtk_box_append (GTK_BOX (box), button);
-
-  gtk_window_present (GTK_WINDOW (window));
-}
-
-int
-main (int    argc,
-      char **argv)
-{
-  GtkApplication *app;
-  int status;
-
-  app = gtk_application_new ("org.gtk.example", G_APPLICATION_DEFAULT_FLAGS);
-  g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
-  status = g_application_run (G_APPLICATION (app), argc, argv);
-  g_object_unref (app);
-
-  return status;
+    gtk_window_present(window);
 }

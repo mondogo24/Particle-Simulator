@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <object class="GtkWindow" id="window">
+    <property name="title">Particle Simulator</property>
+    <property name="default-width">600</property>
+    <property name="default-height">400</property>
+    <child>
+      <object class="GtkStack" id="stack_view_container">
+
+      <!--Main menu view-->
+        <child>
+          <object class="GtkBox" id="main_menu_view">
+            <property name="orientation">vertical</property>
+            <property name="spacing">10</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <child>
+            <object class="GtkButton">
+                <signal name="clicked" handler="main_menu_start_random_simulation_clicked"/>
+                <property name="label">Simulación aleatoria</property>
+            </object>
+            </child>
+            <child>
+            <object class="GtkButton" id="main_menu_button_quit">
+                <property name="label">Salir</property>
+            </object>
+            </child>
+        </object>
+        </child>
+
+      <!--Random generation config view-->
+
+      <!--Particle drawing view-->
+      </object>
+    </child>
+  </object>
+</interface>

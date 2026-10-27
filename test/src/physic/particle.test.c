@@ -4,6 +4,7 @@
 
 #include "test/test_util.h"
 #include "physic/particle.h"
+#include "src/physic/particle_operation.h"
 #include "util/vector2.h"
 
 #define _FIXED_TIME 0.1f

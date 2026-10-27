@@ -3,6 +3,7 @@
 #include <math.h>
 
 #include "physic/particle.h"
+#include "particle_operation.h"
 #include "util/vector2.h"
 
 #define _GRAVITATION_CONSTANT 6.6743e-11

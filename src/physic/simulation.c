@@ -1,7 +1,9 @@
 #include <stdlib.h>
 #include <stddef.h>
+
 #include "physic/simulation.h"
 #include "physic/particle.h"
+#include "particle_operation.h"
 
 static double rand_from(double min_inclusive, double max_exclusive);
 
