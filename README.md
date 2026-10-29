@@ -15,3 +15,4 @@ There are a few features that this program is aiming to have
 # DEPENDENCIES
 ## UBUNTU/DEBIAN
 - GTK 4: libgtk-4-dev
+- Adw 1: libadwaita-1-dev

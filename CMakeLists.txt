@@ -23,6 +23,7 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTK REQUIRED IMPORTED_TARGET gtk4>=4.14)
 pkg_check_modules(gmodule-export-2.0 REQUIRED IMPORTED_TARGET gmodule-export-2.0>=2.80)
+pkg_check_modules(libadwaita-1 REQUIRED IMPORTED_TARGET libadwaita-1>=1.5)
 
 # PROJECT SOURCE CODE
 
@@ -36,58 +37,77 @@ add_dependencies(Particle_Simulator gtk_resources)
 target_link_libraries(Particle_Simulator
     PRIVATE
         core_util
-        core_fast_physic
         core_physic
-        ui_src
-
-        PkgConfig::GTK
+        ui
 )
 
 # PROJECT LIBRARIES
 
+file(GLOB_RECURSE _CORE_UTIL_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/util/*.c)
+file(GLOB_RECURSE _CORE_UTIL_PUBLIC_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/include/util/*.h)
 add_library(core_util)
 target_sources(core_util 
-    PRIVATE src/util/vector2.c
+    PRIVATE ${_CORE_UTIL_SRC}
     PUBLIC FILE_SET HEADERS
         BASE_DIRS include
-        FILES include/util/vector2.h
+        FILES ${_CORE_UTIL_PUBLIC_HEADERS}
 )
 target_link_libraries(core_util PRIVATE m)
 
-add_library(core_fast_physic)
-target_sources(core_fast_physic 
-    PRIVATE src/physic/particle.c
+set(_CORE_PHYSIC_OPTIMIZED_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/physic/particle.c)
+set(_CORE_PHYSIC_OPTIMIZED_PUBLIC_HEADERS 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/physic/particle.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/physic/particle_operation.h
+)
+add_library(_core_physic_optimized)
+target_sources(_core_physic_optimized 
+    PRIVATE ${_CORE_PHYSIC_OPTIMIZED_SRC}
     PUBLIC FILE_SET HEADERS
         BASE_DIRS include src
-        FILES 
-            include/physic/particle.h
-            src/physic/particle_operation.h
+        FILES ${_CORE_PHYSIC_OPTIMIZED_PUBLIC_HEADERS}
 )
-target_compile_options(core_fast_physic PRIVATE $<$<CONFIG:Release>:-O3> $<$<CONFIG:Release>:-fopt-info-vec-all>)
-target_link_libraries(core_fast_physic PUBLIC core_util)
+target_compile_options(_core_physic_optimized PRIVATE $<$<CONFIG:Release>:-O3> $<$<CONFIG:Release>:-fopt-info-vec-all>)
+target_link_libraries(_core_physic_optimized PUBLIC core_util)
 
-add_library(core_physic)
-target_sources(core_physic 
-    PRIVATE src/physic/simulation.c
+file(GLOB_RECURSE _CORE_PHYSIC_NOT_OPTIMIZED_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/physic/*.c)
+list(REMOVE_ITEM _CORE_PHYSIC_NOT_OPTIMIZED_SRC ${_CORE_PHYSIC_OPTIMIZED_SRC})
+file(GLOB_RECURSE _CORE_PHYSIC_NOT_OPTIMIZED_PUBLIC_HEADERS 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/physic/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/physic/*.h
+)
+list(REMOVE_ITEM _CORE_PHYSIC_NOT_OPTIMIZED_PUBLIC_HEADERS ${_CORE_PHYSIC_OPTIMIZED_PUBLIC_HEADERS})
+add_library(_core_physic_not_optimized)
+target_sources(_core_physic_not_optimized 
+    PRIVATE ${_CORE_PHYSIC_NOT_OPTIMIZED_SRC}
     PUBLIC FILE_SET HEADERS
         BASE_DIRS include
-        FILES include/physic/simulation.h
+        FILES ${_CORE_PHYSIC_NOT_OPTIMIZED_PUBLIC_HEADERS}
 )
-target_link_libraries(core_physic PUBLIC core_fast_physic core_util)
+target_link_libraries(_core_physic_not_optimized PUBLIC _core_physic_optimized core_util)
 
-add_library(ui_src)
-target_sources(ui_src
-    PRIVATE
-        src/ui/signal.c
+add_library(core_physic INTERFACE)
+target_link_libraries(core_physic INTERFACE _core_physic_optimized _core_physic_not_optimized)
 
-    INTERFACE FILE_SET HEADERS
-        FILES 
-            src/ui/identifier.h
-            src/ui/signal.h
+file(GLOB_RECURSE _UI_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/ui/*.c)
+file(GLOB_RECURSE _UI_PUBLIC_HEADERS 
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ui/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/ui/*.h
+)
+add_library(ui)
+target_sources(ui
+    PRIVATE ${_UI_SRC}
+    PUBLIC FILE_SET HEADERS
+        FILES ${_UI_PUBLIC_HEADERS}
 )
 # These compile and link options should be only for linux/unix systems
-target_link_options(ui_src PRIVATE -Wl,--export-dynamic)
-target_link_libraries(ui_src PRIVATE PkgConfig::gmodule-export-2.0 PkgConfig::GTK)
+target_link_options(ui PRIVATE -Wl,--export-dynamic)
+target_link_libraries(ui 
+    PRIVATE 
+        PkgConfig::gmodule-export-2.0 
+    PUBLIC
+        PkgConfig::GTK
+        PkgConfig::libadwaita-1
+)
 
 # PROJECT ASSETS
 

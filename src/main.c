@@ -1,4 +1,5 @@
 #include <gtk/gtk.h>
+#include <adwaita.h>
 
 #include "ui/identifier.h"
 #include "ui/signal.h"
@@ -10,6 +11,7 @@ static void activate(GtkApplication* app, gpointer user_data);
 static GtkBuilder* ui_builder;
 
 int main (int argc, char** argv) {
+    adw_init();
     GtkApplication* app = gtk_application_new(APPLICATION_ID, G_APPLICATION_DEFAULT_FLAGS);
     g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);
     int status = g_application_run(G_APPLICATION (app), argc, argv);

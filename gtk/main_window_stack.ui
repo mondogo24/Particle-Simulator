@@ -26,11 +26,184 @@
                 <property name="label">Salir</property>
             </object>
             </child>
-        </object>
+          </object>
         </child>
 
       <!--Random generation config view-->
+        <child>
+          <object class="AdwStatusPage" id="particle_generation_view_random_initialization">
+            <property name="title">Generar particulas aleatoriamente</property>
+            <child>
+              <object class="GtkListBox">
+                <!--SEED-->
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">Semilla</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton"></object>
+                    </child>
+                  </object>
+                </child>
 
+                <!--POSITIONS-->
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">Posición máxima (exclusiva)</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkScale">
+                        <property name="orientation">0</property>
+                        <property name="width-request">130</property>
+                        <property name="draw-value">true</property>
+                        <property name="adjustment">
+                          <object class="GtkAdjustment">
+                            <property name="lower">0</property>
+                            <property name="upper">1e5</property>
+                            <property name="value">0</property>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">Posición mínima (inclusiva)</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkScale">
+                        <property name="orientation">0</property>
+                        <property name="width-request">130</property>
+                        <property name="draw-value">true</property>
+                        <property name="adjustment">
+                          <object class="GtkAdjustment">
+                            <property name="lower">-1e5</property>
+                            <property name="upper">0</property>
+                            <property name="value">-1</property>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+
+                <!--VELOCITIES-->
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">Velocidad máxima (exclusiva)</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkScale">
+                        <property name="orientation">0</property>
+                        <property name="width-request">130</property>
+                        <property name="draw-value">true</property>
+                        <property name="adjustment">
+                          <object class="GtkAdjustment">
+                            <property name="lower">0</property>
+                            <property name="upper">1e5</property>
+                            <property name="value">0</property>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">Velocidad mínima (inclusiva)</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkScale">
+                        <property name="orientation">0</property>
+                        <property name="width-request">130</property>
+                        <property name="draw-value">true</property>
+                        <property name="adjustment">
+                          <object class="GtkAdjustment">
+                            <property name="lower">-1e5</property>
+                            <property name="upper">0</property>
+                            <property name="value">-1</property>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+
+                <!--MASSES-->
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">Masa máxima (exclusiva)</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkScale">
+                        <property name="orientation">0</property>
+                        <property name="width-request">130</property>
+                        <property name="draw-value">true</property>
+                        <property name="adjustment">
+                          <object class="GtkAdjustment">
+                            <property name="lower">0</property>
+                            <property name="upper">1e5</property>
+                            <property name="value">0</property>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="label">Masa mínima (inclusiva)</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkScale">
+                        <property name="orientation">0</property>
+                        <property name="width-request">130</property>
+                        <property name="draw-value">true</property>
+                        <property name="adjustment">
+                          <object class="GtkAdjustment">
+                            <property name="lower">-1e5</property>
+                            <property name="upper">-1</property>
+                            <property name="value">-1</property>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      
       <!--Particle drawing view-->
       </object>
     </child>
